@@ -34,5 +34,7 @@ Les données de profil sont protégées par Row Level Security.
 Pour Apple/Google, la configuration des fournisseurs OAuth doit être faite dans leurs consoles respectives. Les boutons ne peuvent pas être réellement opérationnels sans ces identifiants.
 
 ## Mineurs
-Le parcours collecte l'âge afin d'adapter le produit. Pour les moins de 18 ans, le front-end n'affiche pas automatiquement de déficit calorique. Une politique produit et de sécurité plus complète doit être définie avant un lancement public. const SUPABASE_ANON_KEY =
-Sb_publishable_ThtHobuYQ7P-9c8AAb--dA_omDSiBEt
+Le parcours collecte l'âge afin d'adapter le produit. Pour les moins de 18 ans, le front-end n'affiche pas automatiquement de déficit calorique. Une politique produit et de sécurité plus complète doit être définie avant un lancement public. 
+
+const SUPABASE_URL = "https://abcdefghijklm.supabase.co"; // Votre adresse URL
+const SUPABASE_ANON_KEY = "Sb_publishable_ThtHobuYQ7P-9c8AAb--dA_omDSiBEt";
