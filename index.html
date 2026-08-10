@@ -1,142 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827">
-  <title>CalTrack — V2</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16a34a">
+<title>CalTrack — Suivi alimentaire</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" data-view="dashboard">Cal<span>Track</span></a>
-    <nav>
-      <button class="nav-btn active" data-view="dashboard">Accueil</button>
-      <button class="nav-btn" data-view="journal">Journal</button>
-      <button class="nav-btn" data-view="foods">Aliments</button>
-      <button class="nav-btn" data-view="stats">Statistiques</button>
-    </nav>
-    <button id="profileBtn" class="profile-btn">👤</button>
-  </header>
+<header class="top">
+  <a class="logo" href="#home">Cal<span>Track</span></a>
+  <nav>
+    <a href="#home">Accueil</a><a href="#journal">Journal</a><a href="#foods">Aliments</a><a href="#stats">Stats</a>
+  </nav>
+  <button id="profileOpen" class="avatar" aria-label="Profil">👤</button>
+</header>
 
-  <main>
-    <section id="dashboard" class="view active">
-      <div class="hero">
-        <div>
-          <p class="eyebrow">TON JOURNAL</p>
-          <h1>Bonjour 👋</h1>
-          <p class="muted">Suis tes repas simplement, avec des informations nutritionnelles claires.</p>
-        </div>
-        <div class="date-pill" id="todayLabel"></div>
-      </div>
+<main>
+<section id="home" class="page">
+  <div class="hero">
+    <div><p class="kicker">SUIVI ALIMENTAIRE</p><h1>Ton alimentation,<br><span>simplement.</span></h1><p class="sub">Recherche des produits, scanne un code-barres et suis tes calories et macronutriments.</p></div>
+    <div class="date" id="date"></div>
+  </div>
 
-      <div class="summary-grid">
-        <article class="card calorie-card">
-          <div class="card-head"><span>Calories du jour</span><span>🔥</span></div>
-          <div class="calorie-ring"><strong id="totalCalories">0</strong><span>kcal</span></div>
-          <div class="progress"><i id="calorieProgress"></i></div>
-          <div class="between"><span>Objectif</span><strong id="goalLabel">2000 kcal</strong></div>
-        </article>
+  <div class="dashboard">
+    <article class="card calories">
+      <div class="row"><b>Calories aujourd'hui</b><span>🔥</span></div>
+      <div class="circle"><strong id="kcal">0</strong><small>kcal</small></div>
+      <div class="bar"><i id="kcalBar"></i></div>
+      <div class="row muted"><span>Objectif</span><b id="goal">2000 kcal</b></div>
+    </article>
+    <article class="card">
+      <div class="row"><b>Macros</b><span>⚡</span></div>
+      <div class="macro"><span>Protéines <b id="p">0 g</b></span><div class="bar"><i id="pbar"></i></div></div>
+      <div class="macro"><span>Glucides <b id="c">0 g</b></span><div class="bar"><i id="cbar"></i></div></div>
+      <div class="macro"><span>Lipides <b id="f">0 g</b></span><div class="bar"><i id="fbar"></i></div></div>
+    </article>
+  </div>
 
-        <article class="card">
-          <div class="card-head"><span>Macronutriments</span><span>⚡</span></div>
-          <div class="macro"><span>Protéines</span><strong id="proteinTotal">0 g</strong><div class="mini-progress"><i id="proteinBar"></i></div></div>
-          <div class="macro"><span>Glucides</span><strong id="carbTotal">0 g</strong><div class="mini-progress"><i id="carbBar"></i></div></div>
-          <div class="macro"><span>Lipides</span><strong id="fatTotal">0 g</strong><div class="mini-progress"><i id="fatBar"></i></div></div>
-        </article>
-      </div>
+  <div class="section-title"><div><h2>Ajouter un aliment</h2><p>Recherche dans Open Food Facts ou utilise un code-barres.</p></div><button class="dark" id="scanOpen">▣ Scanner</button></div>
+  <div class="search card"><input id="search" placeholder="Ex. Nutella, yaourt, céréales..." autocomplete="off"><div id="results"></div></div>
 
-      <div class="section-head">
-        <div><h2>Ajouter un aliment</h2><p class="muted">Recherche dans la base de démonstration.</p></div>
-        <button class="primary" data-view="foods">Voir la base</button>
-      </div>
+  <div class="section-title"><div><h2>Aujourd'hui</h2><p>Ton journal alimentaire</p></div><button class="light" id="clear">Effacer</button></div>
+  <div id="meals"></div>
+</section>
 
-      <div class="quick-search card">
-        <input id="quickSearch" placeholder="Ex. banane, riz, poulet..." autocomplete="off">
-        <div id="quickResults"></div>
-      </div>
+<section id="journal" class="page">
+  <div class="title"><p class="kicker">JOURNAL</p><h1>Mes repas</h1><p>Les aliments ajoutés aujourd'hui sont enregistrés sur cet appareil.</p></div>
+  <div id="journalMeals"></div>
+</section>
 
-      <div class="section-head">
-        <div><h2>Aujourd'hui</h2><p class="muted">Ton journal alimentaire</p></div>
-        <button class="ghost" id="clearDay">Effacer la journée</button>
-      </div>
-      <div id="todayMeals" class="meal-list"></div>
-    </section>
+<section id="foods" class="page">
+  <div class="title"><p class="kicker">BASE PRODUITS</p><h1>Rechercher un produit</h1><p>Les données produits sont récupérées depuis Open Food Facts. Cette base est collaborative : les informations peuvent être incomplètes ou incorrectes.</p></div>
+  <div class="search card"><input id="foodSearch" placeholder="Rechercher un produit..."><div id="foodResults"></div></div>
+</section>
 
-    <section id="journal" class="view">
-      <div class="page-title"><p class="eyebrow">JOURNAL</p><h1>Mes repas</h1></div>
-      <div id="journalList" class="meal-list"></div>
-    </section>
+<section id="stats" class="page">
+  <div class="title"><p class="kicker">STATISTIQUES</p><h1>Mon suivi</h1></div>
+  <div class="stats"><article class="card"><span>Jours suivis</span><strong id="days">0</strong></article><article class="card"><span>Aliments ajoutés</span><strong id="count">0</strong></article><article class="card"><span>Calories aujourd'hui</span><strong id="statKcal">0</strong></article></div>
+  <article class="card notice"><b>Informations importantes</b><p>CalTrack est un outil de suivi, pas un dispositif médical. Les données Open Food Facts sont contributives et ne garantissent pas l'exactitude de chaque fiche. Vérifie les informations importantes sur l'emballage. Les objectifs alimentaires ne remplacent pas les conseils d'un professionnel qualifié.</p></article>
+</section>
+</main>
 
-    <section id="foods" class="view">
-      <div class="page-title"><p class="eyebrow">BASE ALIMENTAIRE</p><h1>Trouver un aliment</h1><p class="muted">Les valeurs affichées ici sont des données de démonstration. Pour un lancement public, elles devront être remplacées/validées avec une source nutritionnelle fiable.</p></div>
-      <div class="search-box">
-        <input id="foodSearch" placeholder="Rechercher un aliment..." autocomplete="off">
-        <button id="barcodeBtn" class="secondary">▣ Scanner / code-barres</button>
-      </div>
-      <div id="foodResults" class="food-grid"></div>
-    </section>
+<dialog id="addDialog">
+<form>
+<button type="button" class="close" data-close>×</button><p class="kicker">AJOUTER AU JOURNAL</p><h2 id="dName"></h2><p id="dInfo" class="muted"></p>
+<label>Quantité <input id="qty" type="number" min="1" step="1" value="100"> <span>g</span></label>
+<label>Repas<select id="meal"><option>Petit-déjeuner</option><option>Déjeuner</option><option>Collation</option><option>Dîner</option></select></label>
+<button type="button" class="primary full" id="add">Ajouter</button>
+</form>
+</dialog>
 
-    <section id="stats" class="view">
-      <div class="page-title"><p class="eyebrow">STATISTIQUES</p><h1>Mon suivi</h1><p class="muted">Aperçu local des données enregistrées sur cet appareil.</p></div>
-      <div class="stats-grid">
-        <article class="card stat"><span>Jours enregistrés</span><strong id="daysTracked">0</strong></article>
-        <article class="card stat"><span>Aliments ajoutés</span><strong id="foodsTracked">0</strong></article>
-        <article class="card stat"><span>Calories aujourd'hui</span><strong id="statsCalories">0 kcal</strong></article>
-      </div>
-      <div class="card disclaimer">
-        <strong>À propos des objectifs</strong>
-        <p>CalTrack est un outil de suivi et d'information. Les besoins nutritionnels varient selon l'âge, la croissance, l'activité et la situation de chaque personne. Les objectifs ne remplacent pas l'avis d'un professionnel de santé.</p>
-      </div>
-    </section>
-  </main>
+<dialog id="scanDialog">
+<form>
+<button type="button" class="close" data-close>×</button><p class="kicker">CODE-BARRES</p><h2>Scanner un produit</h2>
+<div id="cameraBox" class="camera"><video id="video" playsinline></video><div class="scanline"></div></div>
+<p class="muted">Si ton navigateur ne permet pas le scan caméra, entre le code EAN manuellement.</p>
+<input id="barcode" inputmode="numeric" placeholder="Ex. 3017620422003">
+<button type="button" class="primary full" id="lookup">Rechercher</button><p id="scanStatus"></p>
+</form>
+</dialog>
 
-  <dialog id="foodDialog">
-    <form method="dialog" id="foodForm">
-      <button class="close" value="cancel">×</button>
-      <p class="eyebrow">AJOUTER</p>
-      <h2 id="dialogFoodName"></h2>
-      <p class="muted" id="dialogFoodInfo"></p>
-      <label>Quantité (g)
-        <input id="quantity" type="number" min="1" value="100" required>
-      </label>
-      <label>Repas
-        <select id="mealSelect">
-          <option>Petit-déjeuner</option>
-          <option>Déjeuner</option>
-          <option>Collation</option>
-          <option>Dîner</option>
-        </select>
-      </label>
-      <button class="primary full" id="confirmAdd" value="default">Ajouter au journal</button>
-    </form>
-  </dialog>
-
-  <dialog id="barcodeDialog">
-    <form method="dialog">
-      <button class="close" value="cancel">×</button>
-      <p class="eyebrow">CODE-BARRES</p>
-      <h2>Scanner un produit</h2>
-      <p class="muted">V2 utilise une saisie de code pour la démo. Le vrai scanner caméra sera connecté à une base de produits dans la prochaine étape.</p>
-      <input id="barcodeInput" placeholder="Ex. 3017620422003">
-      <button class="primary full" id="lookupBarcode" value="default">Rechercher</button>
-      <div id="barcodeResult"></div>
-    </form>
-  </dialog>
-
-  <dialog id="profileDialog">
-    <form method="dialog">
-      <button class="close" value="cancel">×</button>
-      <p class="eyebrow">PROFIL</p>
-      <h2>Mes préférences</h2>
-      <label>Objectif affiché (kcal)
-        <input id="goalInput" type="number" min="1" step="1">
-      </label>
-      <button class="primary full" id="saveGoal" value="default">Enregistrer</button>
-    </form>
-  </dialog>
-
-  <div id="toast" class="toast"></div>
-  <script src="app.js"></script>
+<dialog id="profileDialog">
+<form>
+<button type="button" class="close" data-close>×</button><p class="kicker">PROFIL</p><h2>Objectif quotidien</h2>
+<label>Calories <input id="goalInput" type="number" min="1" value="2000"></label>
+<button type="button" class="primary full" id="saveGoal">Enregistrer</button>
+</form>
+</dialog>
+<div id="toast"></div>
+<script src="app.js"></script>
 </body>
 </html>
