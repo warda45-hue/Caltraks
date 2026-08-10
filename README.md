@@ -1,16 +1,19 @@
-# CalTrack — prototype
+# CalTrack V2
 
-Prototype front-end fonctionnel d'un tracker alimentaire.
+Application web de suivi alimentaire, version 2.
 
-Fonctions incluses :
-- recherche d'aliments
-- sélection d'un aliment
-- choix de la quantité
-- ajout au journal
-- calcul automatique calories/protéines/glucides/lipides
-- objectif calorique modifiable
-- suivi de l'eau
-- sauvegarde locale dans le navigateur
-- interface responsive téléphone/ordinateur
+## V2 inclut
+- Recherche d'aliments
+- Journal par repas
+- Calcul automatique calories + macronutriments
+- Objectif calorique modifiable
+- Sauvegarde locale avec localStorage
+- Statistiques simples
+- Interface responsive mobile/ordinateur
+- Démo de recherche par code-barres
 
-Important : les aliments présents dans cette démo sont des données d'exemple. Pour une mise en production, il faudra brancher une base nutritionnelle vérifiée, une authentification, une vraie base de données, un scanner code-barres et les éléments légaux nécessaires.
+## Important
+Les aliments présents dans cette V2 sont des données de démonstration. Avant une utilisation publique à visée nutritionnelle, il faut connecter et vérifier une source de données nutritionnelles fiable, ainsi qu'ajouter un vrai backend, des comptes utilisateurs, une gestion de la confidentialité et un véritable scanner de codes-barres.
+
+## Déploiement
+Compatible avec GitHub Pages pour la partie front-end statique.
