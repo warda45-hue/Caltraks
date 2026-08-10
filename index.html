@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalTrack — Suivi alimentaire</title>
+  <meta name="description" content="CalTrack, un tracker alimentaire moderne et simple." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="leaf">◢</span> CalTrack</div>
+    <nav>
+      <button class="nav active">⌂ <span>Accueil</span></button>
+      <button class="nav">▣ <span>Aliments</span></button>
+      <button class="nav">▤ <span>Recettes</span></button>
+      <button class="nav">▥ <span>Statistiques</span></button>
+    </nav>
+    <button class="profile">●</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Bonjour 👋</h1>
+        <p>Qu'as-tu mangé aujourd'hui ?</p>
+      </div>
+      <div class="date-pill">📅 <span id="today"></span></div>
+    </section>
+
+    <section class="search-card">
+      <div class="search-row">
+        <input id="foodSearch" type="search" placeholder="Rechercher un aliment, une marque..." autocomplete="off" />
+        <button id="scanBtn" class="outline-btn">▣ Scanner</button>
+      </div>
+      <div id="searchResults" class="search-results hidden"></div>
+      <small>Exemples : banane, pain complet, yaourt nature, riz, poulet...</small>
+    </section>
+
+    <section class="grid">
+      <div class="main-column">
+        <section class="card overview">
+          <div class="section-title">
+            <h2>Aperçu d'aujourd'hui</h2>
+            <button id="editGoal" class="icon-btn">✎</button>
+          </div>
+          <div class="calorie-overview">
+            <div class="ring" id="calorieRing"><div><strong id="calories">0</strong><span>kcal</span><small>consommées</small></div></div>
+            <div class="goal">
+              <div><b>Objectif :</b> <span id="goalValue">2 000</span> kcal</div>
+              <div class="progress"><span id="calorieBar"></span></div>
+              <div class="remaining"><b id="remaining">2 000</b> kcal restantes</div>
+            </div>
+          </div>
+          <div class="macros">
+            <div class="macro"><span>🔥</span><b>CALORIES</b><strong><span id="calorieMacro">0</span> / <span id="goalMacro">2 000</span> kcal</strong><div class="mini-progress"><i id="calorieMini"></i></div></div>
+            <div class="macro"><span>🥩</span><b>PROTÉINES</b><strong><span id="protein">0</span> / 120 g</strong><div class="mini-progress"><i id="proteinMini"></i></div></div>
+            <div class="macro"><span>🍞</span><b>GLUCIDES</b><strong><span id="carbs">0</span> / 250 g</strong><div class="mini-progress"><i id="carbMini"></i></div></div>
+            <div class="macro"><span>🥑</span><b>LIPIDES</b><strong><span id="fat">0</span> / 65 g</strong><div class="mini-progress"><i id="fatMini"></i></div></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>Mes repas</h2>
+            <button id="addMealBtn" class="green-btn">＋ Ajouter un repas</button>
+          </div>
+          <div id="meals"></div>
+          <button id="allMeals" class="link-btn">Voir tous les repas →</button>
+        </section>
+      </div>
+
+      <aside class="side-column">
+        <section class="card streak">
+          <h3>Série actuelle 🔥</h3>
+          <strong>7 <small>jours</small></strong>
+          <p>Garde le cap !<br/>Tu es sur la bonne voie.</p>
+          <div class="sparkline">╱╲╱╱╱╱╱</div>
+        </section>
+
+        <section class="card water">
+          <div class="section-title"><h3>💧 Eau</h3><button class="icon-btn">⚙</button></div>
+          <strong id="waterText">0 <small>/ 2 L</small></strong>
+          <p>Aujourd'hui</p>
+          <div id="waterCups" class="cups"></div>
+          <button id="waterBtn" class="outline-btn full">＋ Ajouter</button>
+        </section>
+
+        <section class="card">
+          <h3>Répartition des macros</h3>
+          <div class="donut" id="donut"></div>
+          <div class="legend"><span>● Protéines <b id="pPct">0%</b></span><span>● Glucides <b id="cPct">0%</b></span><span>● Lipides <b id="fPct">0%</b></span></div>
+        </section>
+
+        <section class="tip"><b>Conseil du jour 💡</b><p>Utilise des portions mesurées pour obtenir un suivi plus précis.</p></section>
+      </aside>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="modal">
+    <div class="modal-box">
+      <button class="close" id="closeModal">×</button>
+      <h2 id="modalTitle">Ajouter un aliment</h2>
+      <p id="selectedFood"></p>
+      <label>Quantité (g)<input id="grams" type="number" min="1" value="100"></label>
+      <label>Repas
+        <select id="mealType">
+          <option>Petit-déjeuner</option><option>Déjeuner</option><option>Goûter</option><option>Dîner</option>
+        </select>
+      </label>
+      <button id="confirmAdd" class="green-btn full">Ajouter au journal</button>
+    </div>
+  </div>
+
+  <footer>CalTrack · Prototype fonctionnel · Les données nutritionnelles affichées ici sont des données de démonstration.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
