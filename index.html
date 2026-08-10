@@ -1,94 +1,61 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#16a34a">
-<title>CalTrack — Suivi alimentaire</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#16a34a"><title>CalTrack</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<header class="top">
-  <a class="logo" href="#home">Cal<span>Track</span></a>
-  <nav>
-    <a href="#home">Accueil</a><a href="#journal">Journal</a><a href="#foods">Aliments</a><a href="#stats">Stats</a>
-  </nav>
-  <button id="profileOpen" class="avatar" aria-label="Profil">👤</button>
-</header>
+<header class="top"><a class="logo" href="#home">Cal<span>Track</span></a><nav><a href="#home">Accueil</a><a href="#app">Mon suivi</a></nav><div id="topUser"></div></header>
 
 <main>
-<section id="home" class="page">
-  <div class="hero">
-    <div><p class="kicker">SUIVI ALIMENTAIRE</p><h1>Ton alimentation,<br><span>simplement.</span></h1><p class="sub">Recherche des produits, scanne un code-barres et suis tes calories et macronutriments.</p></div>
-    <div class="date" id="date"></div>
+<section id="home" class="screen active">
+  <div class="hero"><div><p class="kicker">CALTRACK</p><h1>Ton alimentation,<br><span>plus simplement.</span></h1><p>Un suivi alimentaire moderne : profil personnalisé, journal, calories, macros et progression.</p><div class="heroBtns"><button class="primary" id="startBtn">Créer mon compte</button><button class="secondary" id="loginBtn">Se connecter</button></div></div><div class="heroCard"><div>🔥</div><b>1 540 kcal</b><span>sur 2 000 kcal</span><div class="miniBar"><i></i></div></div></div>
+</section>
+
+<section id="auth" class="screen">
+ <div class="auth card">
+  <div class="back" id="backHome">← Retour</div>
+  <p class="kicker">CALTRACK ACCOUNT</p><h2 id="authTitle">Créer ton compte</h2><p id="authSub" class="muted">Commence gratuitement.</p>
+  <div class="oauth"><button id="googleBtn"><span>G</span> Continuer avec Google</button><button id="appleBtn"><span>●</span> Continuer avec Apple</button></div>
+  <div class="or"><i></i><span>ou avec ton email</span><i></i></div>
+  <div id="signupFields">
+   <label>Prénom / pseudo<input id="name" placeholder="Ex. Warda" autocomplete="given-name"></label>
   </div>
+  <label>Email<input id="email" type="email" placeholder="toi@email.com" autocomplete="email"></label>
+  <label>Mot de passe<input id="password" type="password" placeholder="8 caractères minimum" autocomplete="new-password"></label>
+  <button class="primary full" id="emailBtn">Créer mon compte</button>
+  <button class="link" id="toggleAuth">J'ai déjà un compte</button>
+  <p id="authMsg" class="message"></p>
+ </div>
+</section>
 
-  <div class="dashboard">
-    <article class="card calories">
-      <div class="row"><b>Calories aujourd'hui</b><span>🔥</span></div>
-      <div class="circle"><strong id="kcal">0</strong><small>kcal</small></div>
-      <div class="bar"><i id="kcalBar"></i></div>
-      <div class="row muted"><span>Objectif</span><b id="goal">2000 kcal</b></div>
-    </article>
-    <article class="card">
-      <div class="row"><b>Macros</b><span>⚡</span></div>
-      <div class="macro"><span>Protéines <b id="p">0 g</b></span><div class="bar"><i id="pbar"></i></div></div>
-      <div class="macro"><span>Glucides <b id="c">0 g</b></span><div class="bar"><i id="cbar"></i></div></div>
-      <div class="macro"><span>Lipides <b id="f">0 g</b></span><div class="bar"><i id="fbar"></i></div></div>
-    </article>
+<section id="profile" class="screen">
+ <div class="profile card">
+  <p class="kicker">TON PROFIL</p><h2>Personnalisons CalTrack.</h2><p class="muted">Ces informations servent à adapter ton expérience.</p>
+  <div class="two">
+   <label>Âge<input id="age" type="number" min="13" max="120" placeholder="18"></label>
+   <label>Taille<input id="height" type="number" min="100" max="230" placeholder="170"></label>
   </div>
-
-  <div class="section-title"><div><h2>Ajouter un aliment</h2><p>Recherche dans Open Food Facts ou utilise un code-barres.</p></div><button class="dark" id="scanOpen">▣ Scanner</button></div>
-  <div class="search card"><input id="search" placeholder="Ex. Nutella, yaourt, céréales..." autocomplete="off"><div id="results"></div></div>
-
-  <div class="section-title"><div><h2>Aujourd'hui</h2><p>Ton journal alimentaire</p></div><button class="light" id="clear">Effacer</button></div>
-  <div id="meals"></div>
+  <label>Poids actuel<div class="unit"><input id="weight" type="number" min="25" max="300" step=".1" placeholder="65"><span>kg</span></div></label>
+  <label>Activité<select id="activity"><option value="low">Peu actif</option><option value="medium">Modérément actif</option><option value="high">Très actif</option></select></label>
+  <label>Objectif</label>
+  <div class="goals"><button data-goal="lose">↘ <b>Perdre du poids</b><small>Suivre une évolution</small></button><button data-goal="maintain">→ <b>Maintenir</b><small>Rester stable</small></button><button data-goal="gain">↗ <b>Prendre du poids</b><small>Suivre une évolution</small></button><button data-goal="habits">♥ <b>Mieux manger</b><small>Priorité aux habitudes</small></button></div>
+  <div id="minor" class="notice hidden"><b>Moins de 18 ans</b><p>CalTrack ne calculera pas automatiquement un déficit calorique de perte de poids. Pour un objectif lié au poids pendant la croissance, mieux vaut en parler avec un parent ou un professionnel de santé.</p></div>
+  <p id="profileMsg" class="message"></p><button class="primary full" id="saveProfile">Terminer mon profil</button>
+ </div>
 </section>
 
-<section id="journal" class="page">
-  <div class="title"><p class="kicker">JOURNAL</p><h1>Mes repas</h1><p>Les aliments ajoutés aujourd'hui sont enregistrés sur cet appareil.</p></div>
-  <div id="journalMeals"></div>
-</section>
-
-<section id="foods" class="page">
-  <div class="title"><p class="kicker">BASE PRODUITS</p><h1>Rechercher un produit</h1><p>Les données produits sont récupérées depuis Open Food Facts. Cette base est collaborative : les informations peuvent être incomplètes ou incorrectes.</p></div>
-  <div class="search card"><input id="foodSearch" placeholder="Rechercher un produit..."><div id="foodResults"></div></div>
-</section>
-
-<section id="stats" class="page">
-  <div class="title"><p class="kicker">STATISTIQUES</p><h1>Mon suivi</h1></div>
-  <div class="stats"><article class="card"><span>Jours suivis</span><strong id="days">0</strong></article><article class="card"><span>Aliments ajoutés</span><strong id="count">0</strong></article><article class="card"><span>Calories aujourd'hui</span><strong id="statKcal">0</strong></article></div>
-  <article class="card notice"><b>Informations importantes</b><p>CalTrack est un outil de suivi, pas un dispositif médical. Les données Open Food Facts sont contributives et ne garantissent pas l'exactitude de chaque fiche. Vérifie les informations importantes sur l'emballage. Les objectifs alimentaires ne remplacent pas les conseils d'un professionnel qualifié.</p></article>
+<section id="app" class="screen">
+ <div class="appHead"><div><p class="kicker">MON SUIVI</p><h2>Bonjour <span id="hello"></span> 👋</h2><p class="muted">Voici ton résumé d'aujourd'hui.</p></div><button class="secondary" id="logout">Se déconnecter</button></div>
+ <div class="grid">
+  <article class="card center"><b>Calories</b><div class="big"><strong id="kcal">0</strong><small>kcal</small></div><div class="bar"><i id="kbar"></i></div><small class="muted">Objectif : <span id="goalKcal">—</span></small></article>
+  <article class="card"><b>Profil</b><div class="profileLines"><span>Poids <b id="pWeight">—</b></span><span>Taille <b id="pHeight">—</b></span><span>Objectif <b id="pGoal">—</b></span></div></article>
+ </div>
+ <div class="card notice"><b>Ton journal arrive ensuite.</b><p>Cette V5 met en place le vrai parcours de compte et le profil. La recherche d'aliments, le journal, les codes-barres et les statistiques seront intégrés au même tableau de bord.</p></div>
 </section>
 </main>
-
-<dialog id="addDialog">
-<form>
-<button type="button" class="close" data-close>×</button><p class="kicker">AJOUTER AU JOURNAL</p><h2 id="dName"></h2><p id="dInfo" class="muted"></p>
-<label>Quantité <input id="qty" type="number" min="1" step="1" value="100"> <span>g</span></label>
-<label>Repas<select id="meal"><option>Petit-déjeuner</option><option>Déjeuner</option><option>Collation</option><option>Dîner</option></select></label>
-<button type="button" class="primary full" id="add">Ajouter</button>
-</form>
-</dialog>
-
-<dialog id="scanDialog">
-<form>
-<button type="button" class="close" data-close>×</button><p class="kicker">CODE-BARRES</p><h2>Scanner un produit</h2>
-<div id="cameraBox" class="camera"><video id="video" playsinline></video><div class="scanline"></div></div>
-<p class="muted">Si ton navigateur ne permet pas le scan caméra, entre le code EAN manuellement.</p>
-<input id="barcode" inputmode="numeric" placeholder="Ex. 3017620422003">
-<button type="button" class="primary full" id="lookup">Rechercher</button><p id="scanStatus"></p>
-</form>
-</dialog>
-
-<dialog id="profileDialog">
-<form>
-<button type="button" class="close" data-close>×</button><p class="kicker">PROFIL</p><h2>Objectif quotidien</h2>
-<label>Calories <input id="goalInput" type="number" min="1" value="2000"></label>
-<button type="button" class="primary full" id="saveGoal">Enregistrer</button>
-</form>
-</dialog>
 <div id="toast"></div>
 <script src="app.js"></script>
-</body>
-</html>
+</body></html>

@@ -1,27 +1,37 @@
-# CalTrack V3
+# CalTrack V5 — vrais comptes
 
-Version 3 de CalTrack, avec recherche de produits et lecture de codes-barres via l'API Open Food Facts.
+Cette V5 prépare un vrai système d'authentification avec **Supabase Auth** :
+- email + mot de passe
+- Google OAuth
+- Apple OAuth
+- profil utilisateur en base de données
+- RLS pour que chaque utilisateur ne puisse lire/modifier que son profil
+- parcours : Accueil → inscription/connexion → questionnaire → application
 
-## Fonctionnalités
-- Recherche de produits réels via Open Food Facts
-- Consultation des valeurs nutritionnelles disponibles
-- Ajout par quantité en grammes
-- Journal par repas
-- Calories et macronutriments
-- Objectif calorique
-- Statistiques locales
-- Lecture caméra via BarcodeDetector quand le navigateur le supporte
-- Saisie manuelle du code-barres en secours
-- Interface responsive
+## IMPORTANT : GitHub Pages seul ne peut pas créer ces vrais comptes
+Il faut créer un projet Supabase (gratuit pour commencer), puis renseigner :
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
 
-## Données nutritionnelles
-Open Food Facts est une base collaborative. L'API précise que les données peuvent être incomplètes ou inexactes. Elles doivent donc être présentées comme des informations et non comme des données médicales garanties.
+dans `app.js`.
 
-## API
-Cette version utilise les endpoints publics de lecture Open Food Facts. La documentation actuelle recommande l'API v3 pour les nouvelles intégrations et indique les limites d'utilisation et les bonnes pratiques, notamment l'identification de l'application. Pour un service public à grande échelle, un backend et une stratégie de cache seront nécessaires.
+La clé `anon` est destinée au client. **Ne mets jamais une clé `service_role` dans le code du site.**
 
-## Limites de cette V3
-GitHub Pages ne fournit pas de backend sécurisé, de base utilisateurs ou de paiement. Cette V3 est un vrai site front-end fonctionnel, mais les comptes, synchronisation cloud et abonnement Premium doivent être ajoutés avec un backend.
+## Configuration
+1. Crée un projet Supabase.
+2. Ouvre SQL Editor et exécute `supabase.sql`.
+3. Dans Authentication > Providers, active Email.
+4. Active Google et/ou Apple et configure leurs identifiants OAuth.
+5. Dans Authentication > URL Configuration, ajoute l'URL de ton GitHub Pages dans les URLs autorisées.
+6. Dans `app.js`, remplace les deux placeholders par l'URL et la clé publique de ton projet.
+7. Remplace les fichiers de ton dépôt GitHub par `index.html`, `style.css` et `app.js`.
+8. Garde `supabase.sql` et ce README comme documentation.
 
-## Publication
-Remplacer les trois fichiers `index.html`, `style.css`, `app.js` dans le dépôt GitHub Pages existant.
+## Sécurité
+Cette V5 ne stocke pas les mots de passe elle-même : Supabase Auth s'en charge.
+Les données de profil sont protégées par Row Level Security.
+
+Pour Apple/Google, la configuration des fournisseurs OAuth doit être faite dans leurs consoles respectives. Les boutons ne peuvent pas être réellement opérationnels sans ces identifiants.
+
+## Mineurs
+Le parcours collecte l'âge afin d'adapter le produit. Pour les moins de 18 ans, le front-end n'affiche pas automatiquement de déficit calorique. Une politique produit et de sécurité plus complète doit être définie avant un lancement public.
