@@ -175,16 +175,21 @@
       updateUI();
     }
 
-    async function searchFood() {
+        async function searchFood() {
       const query = document.getElementById('searchInput').value;
       const resultsDiv = document.getElementById('searchResults');
       
       if (!query) return;
       resultsDiv.style.display = 'block';
-      resultsDiv.innerHTML = '<div style="padding:1rem;">Recherche dans Open Food Facts...</div>';
+      resultsDiv.innerHTML = '<div style="padding:1rem;">Recherche en cours...</div>';
 
       try {
-        const res = await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5`);
+        const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5`;
+        const res = await fetch(url, {
+          headers: {
+            'User-Agent': 'CaltracksApp - Web - Version 1.0'
+          }
+        });
         const data = await res.json();
         
         resultsDiv.innerHTML = '';
@@ -210,6 +215,12 @@
             <button class="btn" onclick="addFood('${name.replace(/'/g, "\\'")}', ${kcal}, ${prot}, ${carb}, ${fat})">+ Ajouter</button>
           `;
           resultsDiv.appendChild(item);
+        });
+      } catch (err) {
+        resultsDiv.innerHTML = '<div style="padding:1rem;">Erreur de connexion. Réessayez.</div>';
+      }
+    }
+
         });
       } catch (err) {
         resultsDiv.innerHTML = '<div style="padding:1rem;">Erreur lors de la recherche.</div>';
